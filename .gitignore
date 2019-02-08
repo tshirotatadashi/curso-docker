@@ -1,2 +1,4 @@
-node_modules/
-package-lock.json
+aula1~4/node_modules/
+aula5/node_modules/
+aula1~4/package-lock.json
+aula5/package-lock.json
