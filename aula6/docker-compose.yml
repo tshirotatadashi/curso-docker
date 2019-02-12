@@ -1,0 +1,64 @@
+version: '3'
+services:
+  nginx: # Nome do serviço
+    build: # Especifica que a imagem vai ser buildada
+      dockerfile: ./docker/nginx.dockerfile #especifica o caminho do arquivo para buildar a imagem
+      context: . # Especifica o contexto ao qual eu tenho que partir a busca
+    image: tshirotatadashi/nginx # Define o nome da imagem
+    container_name: nginx # Nome com o qual o container será criado
+    ports:
+      - '80:80'
+    networks:
+      - production-network
+    depends_on: # Especifica que ele depende que um serviço suba antes para ele subir também
+      - 'node1'
+      - 'node2'
+      - 'node3'
+
+  mongodb:
+    image: mongo # Especifica que será contruido a partir e uma imagem
+    networks:
+      - production-network
+
+  node1:
+    build:
+      dockerfile: ./docker/alura-books.dockerfile
+      context: .
+    image: tshirotatadashi/alura-books
+    container_name: alura-books-1
+    ports:
+      - '3000'
+    networks:
+      - production-network
+    depends_on:
+      - 'mongodb'
+
+  node2:
+    build:
+      dockerfile: ./docker/alura-books.dockerfile
+      context: .
+    image: tshirotatadashi/alura-books
+    container_name: alura-books-2
+    ports:
+      - '3000'
+    networks:
+      - production-network
+    depends_on:
+      - 'mongodb'
+
+  node3:
+    build:
+      dockerfile: ./docker/alura-books.dockerfile
+      context: .
+    image: tshirotatadashi/alura-books
+    container_name: alura-books-3
+    ports:
+      - '3000'
+    networks:
+      - production-network
+    depends_on:
+      - 'mongodb'
+
+networks:
+  production-network:
+    driver: bridge
